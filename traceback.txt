@@ -1,0 +1,90 @@
+﻿I'm sorry, but an uncaught exception occurred.
+
+While running game code:
+  File "game/script.rpy", line 36, in script
+    "hello"
+  File "renpy/common/000window.rpy", line 114, in _window_auto_callback
+    _window_show(auto=True)
+  File "renpy/common/000window.rpy", line 69, in _window_show
+    renpy.with_statement(trans)
+  File "game/script.rpy", line 4, in execute
+    screen simple_stats_screen:
+  File "game/script.rpy", line 4, in execute
+    screen simple_stats_screen:
+  File "game/script.rpy", line 5, in execute
+    frame:
+  File "game/script.rpy", line 7, in execute
+    vbox:
+  File "game/script.rpy", line 10, in execute
+    hbox:
+  File "game/script.rpy", line 22, in execute
+    text "[food * 100]%full" size 16
+NameError: Name 'food * 100' is not defined.
+
+-- Full Traceback ------------------------------------------------------------
+
+Full traceback:
+  File "game/script.rpy", line 36, in script
+    "hello"
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/ast.py", line 691, in execute
+    statement_name("say")
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/ast.py", line 46, in statement_name
+    i(name)
+  File "renpy/common/000window.rpy", line 114, in _window_auto_callback
+    _window_show(auto=True)
+  File "renpy/common/000window.rpy", line 69, in _window_show
+    renpy.with_statement(trans)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/exports.py", line 1684, in with_statement
+    return renpy.game.interface.do_with(trans, paired, clear=clear)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 2762, in do_with
+    clear=clear)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3325, in interact
+    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, **kwargs)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3737, in interact_core
+    root_widget.visit_all(lambda i : i.per_interact())
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 568, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 568, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 568, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 568, in visit_all
+    d.visit_all(callback, seen)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/screen.py", line 436, in visit_all
+    callback(self)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3737, in <lambda>
+    root_widget.visit_all(lambda i : i.per_interact())
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/screen.py", line 447, in per_interact
+    self.update()
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/screen.py", line 637, in update
+    self.screen.function(**self.scope)
+  File "game/script.rpy", line 4, in execute
+    screen simple_stats_screen:
+  File "game/script.rpy", line 4, in execute
+    screen simple_stats_screen:
+  File "game/script.rpy", line 5, in execute
+    frame:
+  File "game/script.rpy", line 7, in execute
+    vbox:
+  File "game/script.rpy", line 10, in execute
+    hbox:
+  File "game/script.rpy", line 22, in execute
+    text "[food * 100]%full" size 16
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/text/text.py", line 1669, in _scope
+    return self.set_text(self.text_parameter, scope, self.substitute, update)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/text/text.py", line 1693, in set_text
+    i, did_sub = renpy.substitutions.substitute(i, scope, substitute)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/substitutions.py", line 270, in substitute
+    s = formatter.vformat(s, (), kwargs)
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python2.7/string.py", line 563, in vformat
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python2.7/string.py", line 585, in _vformat
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python2.7/string.py", line 646, in get_field
+  File "/home/tom/ab/renpy-build/tmp/install.linux-x86_64/lib/python2.7/string.py", line 605, in get_value
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/substitutions.py", line 228, in __getitem__
+    raise NameError("Name '{}' is not defined.".format(key))
+NameError: Name 'food * 100' is not defined.
+
+Windows-10-10.0.19041
+Ren'Py 7.4.11.2266
+final 1.0
+Sun Feb 27 19:00:40 2022
