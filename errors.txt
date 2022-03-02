@@ -2,10 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 27: invalid syntax
-    money = 10_000
-                  ^
-    
+File "game/script.rpy", line 6: u'null' is not a keyword argument or valid child for the null statement.
+    null null height 5
+             ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Sun Feb 27 19:00:25 2022
+Wed Mar  2 15:45:09 2022
