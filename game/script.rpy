@@ -101,6 +101,7 @@ label start:
             $ food_expense = 250
         "None. I'll just cook at home for $100 per year":
             $ food_expense = 100
+    $ tight_on_money = (money + food < 15000 and loan == "all") or (money + food  < 20000 and loan == "medium") or (money + food  < 25000 and loan == "small")
     "Good decision! Now that's all done with, so it's time to find your residence hall and meet your roommate!"
     scene picture_of_munger_hall
     "It looks like you're living in Munger Hall. That's the new housing building, so it's gotta be great right?"
@@ -110,6 +111,7 @@ label start:
     scene picture_of_room
     "Huh, it's a bit smaller than expected."
 
+    show roommate
     if roommate == 0:
         r "Hey, man!"
         m "Hey, I think we're roommates!"
@@ -138,13 +140,14 @@ label start:
         r "No way, me too! We're probably gonna have a lot of the same classes so we should totally study together."
         m "Yeah for sure!"
         "Looks like you got very lucky with your roommate."
+    hide roommate
 
-    # scene black_background
+    scene black_background
     "After sorting out everything in your room, you head to your first class. Unfortunately there's already assigned homework \
         Where would you like to study?"
     menu:
         "In your room":
-            # scene picture_of_room
+            scene picture_of_room
             "You go to your room and start studying for a bit."
             "..."
             "Quickly you encounter a few problems. There's no natural lighting so you can't see your notebook, \
@@ -181,6 +184,7 @@ label study_library:
         "You don't see anyone familiar, so you just sit alone."
     elif roommate == 1:
         "Oh look, it's your roommate."
+        show roommate
         m "Hey, roommate!"
         "He looks at you and nods."
         m "Mind if I sit with you?"
@@ -188,12 +192,14 @@ label study_library:
         "You sit with your roommate, mostly in silence but with the occassional comment."
         $ stress -= 1
     elif roommate == 2:
+        show roommate
         "Oh look, it's your roommate."
         r "Hello! What brings you here?"
         m "Oh hey! I just got some homework from my last class to do."
         r "Ah, starting early I see. Let's sit together."
         "You sit with your roommate and talk for a lot of the time (quietly of course, it's a library.)"
         $ stress -= 2
+    hide roommate
     "..."
     "Eventually, you get your homework done, and you decide to head back to your dorm."
 
@@ -203,7 +209,7 @@ label study_library:
     #   or 'strange placement of amenities' detailed in the Daily Nexus article, or just general feeling of isolation
 
 
-    # scene black_background
+    scene black_background
     "Several weeks go by."
     if stress >= 2:
         "School is already pretty stressful."
@@ -219,7 +225,7 @@ label study_library:
         "Your roommate sitation is decent. He's a quiet guy, but at least he doesn't get in the way \
             and is relatively agreeable."
     else:
-        "Your roommmate situation is fantastic. He's already one of your best friends, which makes it \
+        "Your roommate situation is fantastic. He's already one of your best friends, which makes it \
             very easy to communicate and resolve disagreements."
     "Speaking of roommates, you've heard that housing is very competitive, and other students \
          have already started looking for housing for next year. Maybe you should start too."
@@ -227,19 +233,134 @@ label study_library:
     menu:
         "Start looking for housing":
             $ stress += 1
-            # Talk with your roommate. You don't wanna live with bad roommate, you do wanna live with good roommate,
-            # and you're given a choice to live with medium roommate. There is a chance that your roommate has also
-            # already decided where they're living.
-
-            # Pick between living in IV or campus housing. If IV, choose housing now and require security deposit.
-            # If housing, wait until later in year before revealing where you live. There is a chance you don't get
-            # a housing contract, which jumps to the "Wait until later" option.
+            if roommate == 0:
+                "But who should you live with? You haven't had enough time to develop close enough friendships with anyone, \
+                    and your current roommate is terrible. You decide to go random again."
+                jump roommate_random
+            elif roommate == 1:
+                "But who should you live with? You haven't had enough time to develop close enough friendships with anyone. \
+                    Your current roommate is decent; do you wanna ask him?"
+                menu:
+                    "Yes":
+                        jump roommate_current
+                    "No, go random again":
+                        jump roommate_random
+            elif roommate == 2:
+                "But who should you live with? Probably your current roommate since you guys are great friends, \
+                    and you haven't had enough time to develop close enough friendships with anyone else."
+                jump roommate_current
         "Wait until later":
-            $ stress = 0 # just so this compiles for now
-            # Similar talk with roommate. Now you have to live in IV, hotels, or downtown. And there's a lot less options
+            jump end_of_year_no_housing
+
+label roommate_current:
+    scene picture_of_room
+    "You go to your room and ask your roommate if he wants to live with you next year."
+    $ live_with_roommate = True if renpy.random.random() > .33 else False
+    if live_with_roommate:
+        show roommate
+        if roommate == 1:
+            r "Okay, I guess."
+            m "Awesome! Do you want to live in IV or on campus?"
+            r "I don't care."
+            m "I'll decide then."
+        elif roommate == 2:
+            r "Yeah sounds great!"
+            m "Awesome! Do you want to live in IV or on campus?"
+            r "I don't care, what ever is best for you."
+        hide roommate
+        "Do you want to live in IV or on campus? IV will be less expensive, but campus is easier and less problematic."
+        menu:
+            "IV":
+                m "Let's live in IV. Apartments are already up for leases, so let's look now."
+                jump live_IV
+            "Campus":
+                if tight_on_money:
+                    "Actually, after examining your budgets and loan, you would rather live in IV."
+                    jump live_IV
+                m "Let's live on campus. Let's apply for housing now, that way we're more likely to get our top choice."
+                jump live_campus
+    else:
+        "Do you want to live in IV or on campus? IV will be less expensive, but campus is easier and less problematic."
+        menu:
+            "IV":
+                r "Actually I was gonna live on campus, sorry."
+                "Looks like you'll have to go random after all."
+                jump random_IV
+            "Campus":
+                if tight_on_money:
+                    "Actually, after examining your budgets and loan, you would rather live in IV."
+                    r "Actually I was gonna live on campus, sorry."
+                    "Looks like you'll have to go random after all."
+                    jump random_IV
+                r "Actually I was gonna live in IV, sorry."
+                "Looks like you'll have to go random after all."
+                jump random_campus
 
 
+label roommate_random:
+    $ stress += 1
+    "Do you want to live in IV or on campus? IV will be less expensive, but campus is easier and less problematic."
+    menu:
+        "IV":
+            jump random_IV
+        "Campus":
+            if tight_on_money:
+                "Actually, after examining your budgets and loan, you would rather live in IV."
+                jump random_IV
+            jump live_campus
 
+label random_IV:
+    scene looking_at_apartments
+    "You hop on Facebook and start looking for people wanting to live in IV."
+    "..."
+    "After spending several weeks browsing and asking around, you are unable to find anyone to sign a lease with."
+    if tight_on_money:
+        "You decide to just default to living on campus, even though you are tight on money."
+        $ stress += 1
+    else:
+        "You decide to just default to living on campus. At least you can afford it."
+    jump live_campus
+
+label live_IV:
+    scene looking_at_apartments
+    "You guys hop on google and start looking for double apartments in IV."
+    "After a while, you have a pretty solid list of suitable places, and you apply to the top 3."
+    "Now just wait for the property managers to respond."
+    scene black_background
+    "..."
+    scene looking_at_email
+    "Looks like you got one of your top choices!"
+    show roommate
+    r "Hooray!"
+    m "Yay!"
+    hide roommate
+    "The lease is pretty long with a bunch of stuff you don't really understand, but assume is probably fine."
+    "Huh, it looks like you need to put down a security deposit."
+    if tight_on_money:
+        m "Ugh, I wasn't really expecting an expense like that right now."
+        "You can afford it, but you'll have to budget on other things you spend on."
+        $ stress += 1
+    else:
+        "You have enough money or you didn't take out a large loan, so you have no problem expensing it."
+        # Maybe there's a chance that your roommate can't afford it, and you need to loan it to him, which adds stress
+    jump end_of_year_iv_housing
+
+label live_campus:
+    scene looking_at_campus_housing
+    "You open a housing application, and rank the halls and dorm sizes according to your preference."
+    "Now to just wait until the end of the year to find out what you'll get."
+    jump end_of_year_campus_housing
+
+label end_of_year_iv_housing:
     hide screen simple_stats_screen
+    # You did very well and secured housing without many problems!
 
-    "bye"
+label end_of_year_campus_housing:
+    $ stress += 0 # just so this compiles
+    # There's a chance you don't get any housing, and resort to similar options as end_of_year_no_housing.
+    # Otherwise, you successfully secured housing!
+
+label end_of_year_no_housing:
+    $ stress += 0 # just so this compiles
+    # You waited until the end of the year to find housing. Talk with your roommate.
+    # You can't live on campus, so you have to live in IV, hotels, or downtown. And there's a lot less options.

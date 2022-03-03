@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 6: u'null' is not a keyword argument or valid child for the null statement.
-    null null height 5
-             ^
+File "game/script.rpy", line 303: expected menuitem
+    jump live_campus
+    ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Wed Mar  2 15:45:09 2022
+Thu Mar  3 13:01:30 2022
