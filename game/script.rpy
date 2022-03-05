@@ -68,7 +68,7 @@ define r = Character(_("Roommate"), color="#ff503d")
 
 # The game starts here.
 label start:
-    $ money = renpy.random.randint(10, 30) * 1000 # between 10,000 and 30,000
+    $ money = renpy.random.randint(15, 30) * 1000 # between 15,000 and 30,000
     $ food = 100
     $ mental_health = 100
     $ gpa = 4.0
@@ -85,23 +85,23 @@ label start:
     menu:
         "No thanks":
             $ loan = "none"
-        "Yes, $1500":
+        "Yes, $5000":
             $ loan = "small"
-        "Yes, $3500":
+        "Yes, $7500":
             $ loan = "medium"
-        "Yes, all $5000":
+        "Yes, all $10000":
             $ loan = "all"
     "Good decision! Now how much do you want to spend on a meal plan?"
     menu:
-        "I'll get the large meal plan for $1000 per year":
-            $ food_expense = 1000
-        "I'll get the small meal plan for $500 per year":
-            $ food_expense = 500
-        "None. I'll just eat out for $250 per year":
-            $ food_expense = 250
-        "None. I'll just cook at home for $100 per year":
-            $ food_expense = 100
-    $ tight_on_money = (money + food < 15000 and loan == "all") or (money + food  < 20000 and loan == "medium") or (money + food  < 25000 and loan == "small")
+        "I'll get the large meal plan for $8,000 per year":
+            $ food_expense = 8000
+        "I'll get the small meal plan for $6,000 per year":
+            $ food_expense = 6000
+        "None. I'll just eat out for $12,500 per year":
+            $ food_expense = 12500
+        "None. I'll just cook at home for $5,000 per year":
+            $ food_expense = 5000
+    $ tight_on_money = (money - food_expense < 10000 and loan == "all") or (money - food_expense  < 15000 and loan == "medium") or (money - food_expense < 20000 and loan == "small")
     "Good decision! Now that's all done with, so it's time to find your residence hall and meet your roommate!"
     scene picture_of_munger_hall
     "It looks like you're living in Munger Hall. That's the new housing building, so it's gotta be great right?"
@@ -203,11 +203,11 @@ label study_library:
     "..."
     "Eventually, you get your homework done, and you decide to head back to your dorm."
 
-
-    # Maybe some other event here in your dorm that highlights another problem with Munger Hall
-    # For example: the fire alarm goes off and it's really hard to get out, or the long and steep trek to the Hall,
-    #   or 'strange placement of amenities' detailed in the Daily Nexus article, or just general feeling of isolation
-
+    scene black_background
+    "It's dark now and there aren't many students on campus. The fog is in, making it cold and dimming the street lamps."
+    "Munger Hall is on the other side of campus, at the bottom of a long and steep hill. You feel a sense of lonliness on this walk"
+    "College has been a lot lonier then you would have imagined."
+    $ mental_health -= 10
 
     scene black_background
     "Several weeks go by."
@@ -334,15 +334,19 @@ label live_IV:
     r "Hooray!"
     m "Yay!"
     hide roommate
-    "The lease is pretty long with a bunch of stuff you don't really understand, but assume is probably fine."
+    "The lease is pretty long with a bunch of stuff you don't really understand, but assume it's probably fine."
     "Huh, it looks like you need to put down a security deposit."
     if tight_on_money:
         m "Ugh, I wasn't really expecting an expense like that right now."
         "You can afford it, but you'll have to budget on other things you spend on."
         $ stress += 1
+    elif roomate < 2 and renpy.random.randint(0, 9) < 3: # Not a great roomate and 30% change
+        r "A security deposit..."
+        r "I don't think I can really do that right now, but I'll definitely try to pay you back later."
+        $ stress += 1
     else:
         "You have enough money or you didn't take out a large loan, so you have no problem expensing it."
-        # Maybe there's a chance that your roommate can't afford it, and you need to loan it to him, which adds stress
+
     jump end_of_year_iv_housing
 
 label live_campus:

@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 303: expected menuitem
-    jump live_campus
-    ^
+File "game/script.rpy", line 210: expected statement.
+    mental_health -= 10
+                   ^
 
 Ren'Py Version: Ren'Py 7.4.11.2266
-Thu Mar  3 13:01:30 2022
+Sat Mar  5 15:31:41 2022
