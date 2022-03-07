@@ -53,7 +53,7 @@ screen simple_stats_screen:
 
                 null width 5
 
-                text "[mental_health] out of 4.0" size 16
+                text "[gpa] out of 4.0" size 16
 
     frame:
         xpos 0.1 ypos 0.35
@@ -393,5 +393,3 @@ label end_of_all_states:
     hide screen simple_stats_screen
     scene ucsb
     "You are done with the game. Hope you learned something valuable throughout the journey."
-
-
