@@ -71,6 +71,7 @@ label start:
     $ money = renpy.random.randint(15, 30) * 1000 # between 15,000 and 30,000
     $ food = 100
     $ mental_health = 100
+    $ tight_on_money = False
     $ gpa = 4.0
     $ loan = ""
     $ food_expense = 0
@@ -358,13 +359,39 @@ label live_campus:
 label end_of_year_iv_housing:
     hide screen simple_stats_screen
     # You did very well and secured housing without many problems!
+    scene iv_housing
+    "Wow, despite all the hurdles you had to face, you have successfully secured a good housing on IV for next year while maintaining your studies and well being."
+    jump end_of_all_states
 
 label end_of_year_campus_housing:
-    $ stress += 0 # just so this compiles
+    # 30 % chance you actually get housing
     # There's a chance you don't get any housing, and resort to similar options as end_of_year_no_housing.
     # Otherwise, you successfully secured housing!
+    $ secure_camp_housing = renpy.random.randint(0, 9) < 3
 
+    "Your only option was to wait until the end of the year resorting to campus housing. However, recently there has been major upsurge in campus population making it extremely difficult for university to allocate housing space for all students. Lets check if you are lucky to secure a spot"
+    scene black_background
+    "..."
+    if secure_camp_housing:
+        scene picture_of_munger_hall
+        "Congratulations. You are lucky. You got the same spot in Munger hall."
+        jump end_of_all_states
+    else:
+        $ stress += 2
+        scene sad_background
+        "Unfortunately, the campus could not provide you any housing. Pressure is upon you now."
+        jump end_of_year_no_housing
+
+# could expand this if you want
 label end_of_year_no_housing:
-    $ stress += 0 # just so this compiles
-    # You waited until the end of the year to find housing. Talk with your roommate.
-    # You can't live on campus, so you have to live in IV, hotels, or downtown. And there's a lot less options.
+    scene sad_background
+    "You've waited until the end of the year to find housing. Unfortunately, you could not secure a spot. Your only only options are to keeping looking houses in IV, hotels, or downtown."
+    jump end_of_all_states
+
+# end game message
+label end_of_all_states:
+    hide screen simple_stats_screen
+    scene ucsb
+    "You are done with the game. Hope you learned something valuable throughout the journey."
+
+
