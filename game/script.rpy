@@ -58,12 +58,31 @@ screen simple_stats_screen:
     frame:
         xpos 0.1 ypos 0.35
         vbox:
+            text "Stress level" size 22 xalign 0.5
+            null height 5
+            hbox:
+                bar:
+                    xmaximum 130
+                    value stress
+                    range 10
+                    left_gutter 0
+                    right_gutter 0
+                    thumb None
+                    thumb_shadow None
+
+                null width 5
+
+                text "[stress]" size 16
+
+    frame:
+        xpos 0.1 ypos 0.45
+        vbox:
             text "Wallet: $[money]" size 22 xalign 0.5
 
 
 
 define m = Character(_("Me"), color="#3d4dff")
-define r = Character(_("Roommate"), color="#ff503d")
+define r = Character(_("Suitemate"), color="#ff503d")
 
 
 # The game starts here.
@@ -79,6 +98,7 @@ label start:
     $ stress = 3
 
     show screen simple_stats_screen
+    with fade
 
     "It's your first day of college! Before beginning your academic life, you must figure out a few logistics first."
     "It appears you have $[money] budgeted for college, and you need to decide how to divy that up between tuition, loans, and food."
@@ -92,6 +112,8 @@ label start:
             $ loan = "medium"
         "Yes, all $10000":
             $ loan = "all"
+    # Should we add the loan amount to money?
+
     "Good decision! Now how much do you want to spend on a meal plan?"
     menu:
         "I'll get the large meal plan for $8,000 per year":
@@ -102,20 +124,24 @@ label start:
             $ food_expense = 12500
         "None. I'll just cook at home for $5,000 per year":
             $ food_expense = 5000
-    $ tight_on_money = (money - food_expense < 10000 and loan == "all") or (money - food_expense  < 15000 and loan == "medium") or (money - food_expense < 20000 and loan == "small")
-    "Good decision! Now that's all done with, so it's time to find your residence hall and meet your roommate!"
+
+    $ money -= food_expense
+    $ tight_on_money = (money < 10000 and loan == "all") or (money  < 15000 and loan == "medium") or (money < 20000 and loan == "small")
+
+    "Good decision! Now that's all done with, so it's time to find your residence hall and meet your suitemate!"
     scene picture_of_munger_hall
+    with fade
     "It looks like you're living in Munger Hall. That's the new housing building, so it's gotta be great right?"
     "Apparently there's 4500 students living here. More like 4500 potential friends! Let's have a look inside."
     scene inside_munger_hall
-    "Hmmm, this is your room. I wonder if your roommate are here. You open the door and see what your room looks like."
+    "Hmmm, this is your room. I wonder if your suitemate are here. You open the door and see what your room looks like."
     scene picture_of_room
     "Huh, it's a bit smaller than expected."
 
     show roommate
     if roommate == 0:
         r "Hey, man!"
-        m "Hey, I think we're roommates!"
+        m "Hey, I think we're suitemates!"
         r "Yeah, that really sucks. Haha, just playing around."
         "Was he really playing around though?"
         r "Hey dude, I hope it's no problem, but I have a really big monitor so it's gonna have to take up both of our desks. \
@@ -124,7 +150,7 @@ label start:
         r "Sorry dude, gamer's gotta game!"
         "Looks like this might be a problem."
     elif roommate == 1:
-        m "Hey I think we're roommates!"
+        m "Hey I think we're suitemates!"
         r "Oh, cool."
         m "What's your major?"
         r "Undeclared."
@@ -135,12 +161,12 @@ label start:
         "Looks like he's a little quiet, but at least his belongings are clean and organized."
     else:
         r "Hello!"
-        m "Hey I think we're roommates!"
+        m "Hey I think we're suitemates!"
         r "Awesome, it's great to meet you. What's your major?"
         m "Computer Science, how about you?"
         r "No way, me too! We're probably gonna have a lot of the same classes so we should totally study together."
         m "Yeah for sure!"
-        "Looks like you got very lucky with your roommate."
+        "Looks like you got very lucky with your suitemate."
     hide roommate
 
     scene black_background
@@ -155,22 +181,27 @@ label start:
                 and it's really stuffy due to the lack of windows. It's really hard to study here."
             $ stress += 1
             if roommate == 0:
-                "On top of that, you have to study on your bed since your roommate is taking up both desks, \
+                "On top of that, you have to study on your bed since your suitemate is taking up both desks, \
                     and you can hear him cursing at whatever dumb game he's playing."
                 $ stress += 1
             "Maybe you wanna study somewhere else?"
             menu:
                 "In the study lounge area":
                     jump study_lounge
+                    with moveinright
                 "In the library":
                     jump study_library
+                    with moveinright
         "In the study lounge area":
             jump study_lounge
+            with moveinright
         "In the library":
             jump study_library
+            with moveinright
 
 label study_lounge:
     scene picture_of_lounge
+    with hpunch
     "You go to your dorm's lounge to start studying for a bit."
     "..."
     "There's too many people here and the lounge is too small, so there's no place for you to sit. \
@@ -184,33 +215,35 @@ label study_library:
     if roommate == 0:
         "You don't see anyone familiar, so you just sit alone."
     elif roommate == 1:
-        "Oh look, it's your roommate."
+        "Oh look, it's your suitemate."
         show roommate
-        m "Hey, roommate!"
+        m "Hey, suitemate!"
         "He looks at you and nods."
         m "Mind if I sit with you?"
         r "Sure."
-        "You sit with your roommate, mostly in silence but with the occassional comment."
+        "You sit with your suitemate, mostly in silence but with the occassional comment."
         $ stress -= 1
     elif roommate == 2:
         show roommate
-        "Oh look, it's your roommate."
+        "Oh look, it's your suitemate."
         r "Hello! What brings you here?"
         m "Oh hey! I just got some homework from my last class to do."
         r "Ah, starting early I see. Let's sit together."
-        "You sit with your roommate and talk for a lot of the time (quietly of course, it's a library.)"
+        "You sit with your suitemate and talk for a lot of the time (quietly of course, it's a library.)"
         $ stress -= 2
     hide roommate
     "..."
     "Eventually, you get your homework done, and you decide to head back to your dorm."
 
     scene black_background
+    with ease
     "It's dark now and there aren't many students on campus. The fog is in, making it cold and dimming the street lamps."
     "Munger Hall is on the other side of campus, at the bottom of a long and steep hill. You feel a sense of lonliness on this walk"
     "College has been a lot lonier then you would have imagined."
     $ mental_health -= 10
 
     scene black_background
+    with wipeleft
     "Several weeks go by."
     if stress >= 2:
         "School is already pretty stressful."
@@ -220,15 +253,15 @@ label study_library:
         "School is very easy, and you're not really stressed."
     "Your dorm isn't that great, as you've discovered from talking to others who live closer to campus."
     if roommate == 0:
-        "Your roommate sitation isn't good either. You've tried to resolve some of the problems, \
+        "Your suitemate sitation isn't good either. You've tried to resolve some of the problems, \
             but he's just blantantly inconsiderate."
     elif roommate == 1:
-        "Your roommate sitation is decent. He's a quiet guy, but at least he doesn't get in the way \
+        "Your suitemate sitation is decent. He's a quiet guy, but at least he doesn't get in the way \
             and is relatively agreeable."
     else:
-        "Your roommate situation is fantastic. He's already one of your best friends, which makes it \
+        "Your suitemate situation is fantastic. He's already one of your best friends, which makes it \
             very easy to communicate and resolve disagreements."
-    "Speaking of roommates, you've heard that housing is very competitive, and other students \
+    "Speaking of suitemates, you've heard that housing is very competitive, and other students \
          have already started looking for housing for next year. Maybe you should start too."
     "At the same time, you're very busy studying for finals next week. What do you wanna do?"
     menu:
@@ -236,18 +269,18 @@ label study_library:
             $ stress += 1
             if roommate == 0:
                 "But who should you live with? You haven't had enough time to develop close enough friendships with anyone, \
-                    and your current roommate is terrible. You decide to go random again."
+                    and your current suitemate is terrible. You decide to go random again."
                 jump roommate_random
             elif roommate == 1:
                 "But who should you live with? You haven't had enough time to develop close enough friendships with anyone. \
-                    Your current roommate is decent; do you wanna ask him?"
+                    Your current suitemate is decent; do you wanna ask him?"
                 menu:
                     "Yes":
                         jump roommate_current
                     "No, go random again":
                         jump roommate_random
             elif roommate == 2:
-                "But who should you live with? Probably your current roommate since you guys are great friends, \
+                "But who should you live with? Probably your current suitemate since you guys are great friends, \
                     and you haven't had enough time to develop close enough friendships with anyone else."
                 jump roommate_current
         "Wait until later":
@@ -255,7 +288,7 @@ label study_library:
 
 label roommate_current:
     scene picture_of_room
-    "You go to your room and ask your roommate if he wants to live with you next year."
+    "You go to your room and ask your suitemate if he wants to live with you next year."
     $ live_with_roommate = True if renpy.random.random() > .33 else False
     if live_with_roommate:
         show roommate
@@ -312,6 +345,7 @@ label roommate_random:
 
 label random_IV:
     scene looking_at_apartments
+    with wipeleft
     "You hop on Facebook and start looking for people wanting to live in IV."
     "..."
     "After spending several weeks browsing and asking around, you are unable to find anyone to sign a lease with."
@@ -324,6 +358,7 @@ label random_IV:
 
 label live_IV:
     scene looking_at_apartments
+    with wipeleft
     "You guys hop on google and start looking for double apartments in IV."
     "After a while, you have a pretty solid list of suitable places, and you apply to the top 3."
     "Now just wait for the property managers to respond."
@@ -357,7 +392,7 @@ label live_campus:
     jump end_of_year_campus_housing
 
 label end_of_year_iv_housing:
-    hide screen simple_stats_screen
+    with fade
     # You did very well and secured housing without many problems!
     scene iv_housing
     "Wow, despite all the hurdles you had to face, you have successfully secured a good housing on IV for next year while maintaining your studies and well being."
@@ -371,6 +406,7 @@ label end_of_year_campus_housing:
 
     "Your only option was to wait until the end of the year resorting to campus housing. However, recently there has been major upsurge in campus population making it extremely difficult for university to allocate housing space for all students. Lets check if you are lucky to secure a spot"
     scene black_background
+    with fade
     "..."
     if secure_camp_housing:
         scene picture_of_munger_hall
@@ -385,6 +421,7 @@ label end_of_year_campus_housing:
 # could expand this if you want
 label end_of_year_no_housing:
     scene sad_background
+    with fade
     "You've waited until the end of the year to find housing. Unfortunately, you could not secure a spot. Your only only options are to keeping looking houses in IV, hotels, or downtown."
     jump end_of_all_states
 
@@ -392,4 +429,5 @@ label end_of_year_no_housing:
 label end_of_all_states:
     hide screen simple_stats_screen
     scene ucsb
+    with zoomout
     "You are done with the game. Hope you learned something valuable throughout the journey."

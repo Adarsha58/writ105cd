@@ -1,28 +1,30 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 231, in script
-    if roommate == 0:
-  File "game/script.rpy", line 243, in <module>
-    elif roommmate == 2:
-NameError: name 'roommmate' is not defined
+  File "game/script.rpy", line 137, in script
+    with Fade(0.125)
+TypeError: Fade() takes at least 3 arguments (3 given)
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 231, in script
-    if roommate == 0:
-  File "/Users/brandonnadell/Desktop/renpy-7.4.11-sdk/renpy/ast.py", line 1898, in execute
-    if renpy.python.py_eval(condition):
-  File "/Users/brandonnadell/Desktop/renpy-7.4.11-sdk/renpy/python.py", line 2276, in py_eval
-    return py_eval_bytecode(code, globals, locals)
-  File "/Users/brandonnadell/Desktop/renpy-7.4.11-sdk/renpy/python.py", line 2269, in py_eval_bytecode
-    return eval(bytecode, globals, locals)
-  File "game/script.rpy", line 243, in <module>
-    elif roommmate == 2:
-NameError: name 'roommmate' is not defined
+  File "game/script.rpy", line 137, in script
+    with Fade(0.125)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/ast.py", line 1443, in execute
+    renpy.exports.with_statement(trans, paired)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/exports.py", line 1684, in with_statement
+    return renpy.game.interface.do_with(trans, paired, clear=clear)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 2762, in do_with
+    clear=clear)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3325, in interact
+    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, **kwargs)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3676, in interact_core
+    new_widget=layers_root)
+  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/curry.py", line 48, in __call__
+    return self.callable(*(self.args + args), **merged_kwargs)
+TypeError: Fade() takes at least 3 arguments (3 given)
 
-Darwin-21.1.0-x86_64-i386-64bit
+Windows-10-10.0.19041
 Ren'Py 7.4.11.2266
 final 1.0
-Thu Mar  3 13:03:36 2022
+Tue Mar  8 21:49:22 2022

@@ -12,7 +12,7 @@
 ##
 ## The _() surrounding the string marks it as eligible for translation.
 
-define config.name = _("final")
+define config.name = _("Writ 105CD Final Coded Artifact")
 
 
 ## Determines if the title given above is shown on the main menu screen. Set
@@ -150,7 +150,7 @@ define config.save_directory = "final-1646016308"
 ##
 ## The icon displayed on the taskbar or dock.
 
-define config.window_icon = "gui/window_icon.png"
+define config.window_icon = "images/picture_of_munger_hall.jpg"
 
 
 ## Build configuration #########################################################
