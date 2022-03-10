@@ -1,30 +1,26 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 137, in script
-    with Fade(0.125)
-TypeError: Fade() takes at least 3 arguments (3 given)
+  File "game/script.rpy", line 103, in script
+    $ name = renpy.input("What is your name?", length=32, prompt="Name")
+  File "game/script.rpy", line 103, in <module>
+    $ name = renpy.input("What is your name?", length=32, prompt="Name")
+TypeError: input() got multiple values for keyword argument 'prompt'
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 137, in script
-    with Fade(0.125)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/ast.py", line 1443, in execute
-    renpy.exports.with_statement(trans, paired)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/exports.py", line 1684, in with_statement
-    return renpy.game.interface.do_with(trans, paired, clear=clear)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 2762, in do_with
-    clear=clear)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3325, in interact
-    repeat, rv = self.interact_core(preloads=preloads, trans_pause=trans_pause, pause=pause, pause_start=pause_start, **kwargs)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/display/core.py", line 3676, in interact_core
-    new_widget=layers_root)
-  File "C:\Users\Alex3\Downloads\renpy-7.4.11-sdk/renpy/curry.py", line 48, in __call__
-    return self.callable(*(self.args + args), **merged_kwargs)
-TypeError: Fade() takes at least 3 arguments (3 given)
+  File "game/script.rpy", line 103, in script
+    $ name = renpy.input("What is your name?", length=32, prompt="Name")
+  File "/Users/brandonnadell/Desktop/renpy-7.4.11-sdk/renpy/ast.py", line 928, in execute
+    renpy.python.py_exec_bytecode(self.code.bytecode, self.hide, store=self.store)
+  File "/Users/brandonnadell/Desktop/renpy-7.4.11-sdk/renpy/python.py", line 2245, in py_exec_bytecode
+    exec(bytecode, globals, locals)
+  File "game/script.rpy", line 103, in <module>
+    $ name = renpy.input("What is your name?", length=32, prompt="Name")
+TypeError: input() got multiple values for keyword argument 'prompt'
 
-Windows-10-10.0.19041
+Darwin-21.1.0-x86_64-i386-64bit
 Ren'Py 7.4.11.2266
-final 1.0
-Tue Mar  8 21:49:22 2022
+Writ 105CD Final Coded Artifact 1.0
+Wed Mar  9 13:45:04 2022

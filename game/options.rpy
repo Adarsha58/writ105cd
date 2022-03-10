@@ -150,7 +150,7 @@ define config.save_directory = "final-1646016308"
 ##
 ## The icon displayed on the taskbar or dock.
 
-define config.window_icon = "images/picture_of_munger_hall.jpg"
+define config.window_icon = "gui/window_icon.png"
 
 
 ## Build configuration #########################################################
