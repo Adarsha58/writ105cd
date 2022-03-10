@@ -1,64 +1,64 @@
 screen simple_stats_screen:
-    # frame:
-    #     xpos 0.1 ypos 0.05
-    #     vbox:
-    #         text "Food" size 22 xalign 0.5
-    #         null height 5
-    #         hbox:
-    #             bar:
-    #                 xmaximum 130
-    #                 value food
-    #                 range 100
-    #                 right_gutter 0
-    #                 thumb None
-    #                 thumb_shadow None
-
-    #             null width 5
-
-    #             text "[food]% full" size 16
-
-    # frame:
-    #     xpos 0.1 ypos 0.15
-    #     vbox:
-    #         text "Mental Heath" size 22 xalign 0.5
-    #         null height 5
-    #         hbox:
-    #             bar:
-    #                 xmaximum 130
-    #                 value mental_health
-    #                 range 100
-    #                 left_gutter 0
-    #                 right_gutter 0
-    #                 thumb None
-    #                 thumb_shadow None
-
-    #             null width 5
-
-    #             text "[mental_health]%" size 16
-
-    # frame:
-    #     xpos 0.1 ypos 0.25
-    #     vbox:
-    #         text "GPA" size 22 xalign 0.5
-    #         null height 5
-    #         hbox:
-    #             bar:
-    #                 xmaximum 130
-    #                 value gpa
-    #                 range 4
-    #                 left_gutter 0
-    #                 right_gutter 0
-    #                 thumb None
-    #                 thumb_shadow None
-
-    #             null width 5
-
-    #             text "[gpa] out of 4.0" size 16
-
     frame:
         xpos 0.1 ypos 0.05
         vbox:
-            text "Stress Level" size 22 xalign 0.5
+            text "Food" size 22 xalign 0.5
+            null height 5
+            hbox:
+                bar:
+                    xmaximum 130
+                    value food
+                    range 100
+                    right_gutter 0
+                    thumb None
+                    thumb_shadow None
+
+                null width 5
+
+                text "[food]% full" size 16
+
+    frame:
+        xpos 0.1 ypos 0.15
+        vbox:
+            text "Mental Heath" size 22 xalign 0.5
+            null height 5
+            hbox:
+                bar:
+                    xmaximum 130
+                    value mental_health
+                    range 100
+                    left_gutter 0
+                    right_gutter 0
+                    thumb None
+                    thumb_shadow None
+
+                null width 5
+
+                text "[mental_health]%" size 16
+
+    frame:
+        xpos 0.1 ypos 0.25
+        vbox:
+            text "GPA" size 22 xalign 0.5
+            null height 5
+            hbox:
+                bar:
+                    xmaximum 130
+                    value gpa
+                    range 4
+                    left_gutter 0
+                    right_gutter 0
+                    thumb None
+                    thumb_shadow None
+
+                null width 5
+
+                text "[gpa] out of 4.0" size 16
+
+    frame:
+        xpos 0.1 ypos 0.35
+        vbox:
+            text "Stress level" size 22 xalign 0.5
             null height 5
             hbox:
                 bar:
@@ -75,13 +75,13 @@ screen simple_stats_screen:
                 text "[stress]" size 16
 
     frame:
-        xpos 0.1 ypos 0.15
+        xpos 0.1 ypos 0.45
         vbox:
             text "Wallet: $[money]" size 22 xalign 0.5
 
 
 
-define m = Character(_("[name]"), color="#3d4dff")
+define m = Character(_("Me"), color="#3d4dff")
 define r = Character(_("Suitemate"), color="#ff503d")
 
 
@@ -96,11 +96,10 @@ label start:
     $ food_expense = 0
     $ roommate = renpy.random.randint(0, 2) # 0, 1, or 2 (2 is the best score)
     $ stress = 3
+    $ max_stress = 10
 
     show screen simple_stats_screen
     with fade
-
-    $ name = renpy.input("What is your name?", length=32, default="Name here")
 
     "It's your first day of college! Before beginning your academic life, you must figure out a few logistics first."
     "It appears you have $[money] budgeted for college, and you need to decide how to divy that up between tuition, loans, and food."
@@ -136,10 +135,8 @@ label start:
     "It looks like you're living in Munger Hall. That's the new housing building, so it's gotta be great right?"
     "Apparently there's 4500 students living here. More like 4500 potential friends! Let's have a look inside."
     scene inside_munger_hall
-    with fade
     "Hmmm, this is your room. I wonder if your suitemate are here. You open the door and see what your room looks like."
     scene picture_of_room
-    with fade
     "Huh, it's a bit smaller than expected."
 
     show roommate
@@ -174,13 +171,11 @@ label start:
     hide roommate
 
     scene black_background
-    with fade
     "After sorting out everything in your room, you head to your first class. Unfortunately there's already assigned homework \
         Where would you like to study?"
     menu:
         "In your room":
             scene picture_of_room
-            with fade
             "You go to your room and start studying for a bit."
             "..."
             "Quickly you encounter a few problems. There's no natural lighting so you can't see your notebook, \
@@ -217,7 +212,6 @@ label study_lounge:
 
 label study_library:
     scene picture_of_library
-    with fade
     "You go to the library. It's quiet and there's a lot of space to sit."
     if roommate == 0:
         "You don't see anyone familiar, so you just sit alone."
@@ -243,11 +237,11 @@ label study_library:
     "Eventually, you get your homework done, and you decide to head back to your dorm."
 
     scene black_background
-    with fade
+    with ease
     "It's dark now and there aren't many students on campus. The fog is in, making it cold and dimming the street lamps."
-    "Munger Hall is on the other side of campus, at the bottom of a long and steep hill. You feel a sense of loneliness on this walk."
-    "College has been a lot lonelier then you would have imagined."
-    $ stress += 1
+    "Munger Hall is on the other side of campus, at the bottom of a long and steep hill. You feel a sense of lonliness on this walk"
+    "College has been a lot lonier then you would have imagined."
+    $ mental_health -= 10
 
     scene black_background
     with wipeleft
@@ -291,15 +285,10 @@ label study_library:
                     and you haven't had enough time to develop close enough friendships with anyone else."
                 jump roommate_current
         "Wait until later":
-            scene sad_background
-            with fade
-            "You've waited until the end of the year to find housing. Unfortunately, it seems IV housing has already filled up; \
-            maybe you should've started looking earlier. Now pressure is upon you now to find an apartment in Goleta or downtown."
-            jump end_of_all_states
+            jump end_of_year_no_housing
 
 label roommate_current:
     scene picture_of_room
-    with fade
     "You go to your room and ask your suitemate if he wants to live with you next year."
     $ live_with_roommate = True if renpy.random.random() > .33 else False
     if live_with_roommate:
@@ -375,10 +364,8 @@ label live_IV:
     "After a while, you have a pretty solid list of suitable places, and you apply to the top 3."
     "Now just wait for the property managers to respond."
     scene black_background
-    with fade
     "..."
     scene looking_at_email
-    with fade
     "Looks like you got one of your top choices!"
     show roommate
     r "Hooray!"
@@ -390,7 +377,7 @@ label live_IV:
         m "Ugh, I wasn't really expecting an expense like that right now."
         "You can afford it, but you'll have to budget on other things you spend on."
         $ stress += 1
-    elif roommate < 2 and renpy.random.randint(0, 9) < 3: # Not a great roommate and 30% change
+    elif roomate < 2 and renpy.random.randint(0, 9) < 3: # Not a great roomate and 30% change
         r "A security deposit..."
         r "I don't think I can really do that right now, but I'll definitely try to pay you back later."
         $ stress += 1
@@ -401,44 +388,93 @@ label live_IV:
 
 label live_campus:
     scene looking_at_campus_housing
-    with fade
     "You open a housing application, and rank the halls and dorm sizes according to your preference."
     "Now to just wait until the end of the year to find out what you'll get."
-    
+    jump end_of_year_campus_housing
+
+label end_of_year_iv_housing:
+    with fade
+    # You did very well and secured housing without many problems!
+    scene iv_housing
+    "Wow, despite all the hurdles you had to face, you have successfully secured a good housing on IV for next year while maintaining your studies and well being."
+    jump end_stress_check
+
+label end_of_year_campus_housing:
     # 30 % chance you actually get housing
     # There's a chance you don't get any housing, and resort to similar options as end_of_year_no_housing.
     # Otherwise, you successfully secured housing!
-    $ secure_camp_housing = renpy.random.randint(0, 2) == 1
+    $ secure_camp_housing = renpy.random.randint(0, 9) < 3
 
-    "However, there has recently been a major upsurge in campus population, making it extremely difficult for the university \
-    to allocate housing space for all students. Lets check if you are lucky to secure a spot."
+    "Your only option was to wait until the end of the year resorting to campus housing. However, recently there has been major upsurge in campus population making it extremely difficult for university to allocate housing space for all students. Lets check if you are lucky to secure a spot"
     scene black_background
     with fade
     "..."
     if secure_camp_housing:
-        scene looking_at_email
-        with fade
-        "Congratulations! You luckily secured a housing contract, and avoided another round of Munger hall."
-        jump end_of_all_states
+        scene picture_of_munger_hall
+        "Congratulations. You are lucky. You got the same spot in Munger hall."
+        jump end_stress_check
     else:
-        $ stress += 3
+        $ stress += 2
         scene sad_background
-        with fade
-        "Unfortunately, the campus could not provide you any housing. Also, it seems IV housing has already filled up. \
-        Pressure is upon you now to find an apartment in Goleta or downtown."
-        jump end_of_all_states
+        "Unfortunately, the campus could not provide you any housing. Pressure is upon you now."
+        jump end_of_year_no_housing
 
-label end_of_year_iv_housing:
-    scene iv_housing
+label end_of_year_no_housing:
+    scene sad_background
     with fade
-    "Wow, despite all the hurdles you had to face, you have successfully secured a good housing on IV for next year while maintaining your studies and well being."
-    jump end_of_all_states
+    "You've waited until the end of the year to find housing. Unfortunately, you could not secure a spot. Your only only options are to either couch surf or live hotel."
+    menu:
+        "Couch surf":
+            jump couch_surf
+        "Live in Hotel":
+            jump live_in_hotel
 
+label couch_surf:
+    if roommate <= 1:
+        scene black_background
+        with fade
+        "It seems like you have not made enough friends throughout the year. So, couch surfing is out of the question. The only remaining option is to live in a hotel."
+        jump live_in_hotel
+    else:
+        "Let make sure with your roommates if they are okay with you couch surf once in a while."
+        show roommate
+        "Oh look, it's your last year roommates."
+        r "Hello there. How have you been? We have not seen you in a while :)"
+        m "Oh hey! Ummmm. Im supposedly doing okay. Just trying to find housing for next year but I became a victim of housing crisis."
+        r "Oh no! Many of our friends are in the same situation. Hopefully, the university does something about it. Let us know if there is anything we can do to help you."
+        m "Actually yes. I was gonna ask if you guys were okay if I could couch surf once in a while in the worst case scenario."
+        r "Of course. buddy. That is what friends are for :)"
+
+        scene black_background
+        "You start couch surfing. Weeks pass by."
+        "..."
+        "Yours friends are getting little uncomfortable. You are getting lot of stress because you still cant find any housing."
+        $ stress +=  10
+        jump end_stress_check
+
+label live_in_hotel:
+    if money > 10000 :
+        $ money -= 100000
+    else :
+        $ money = 0
+    scene hotel
+    "Several weeks pass by living in the hotel."
+    "..."
+    "You still cant find housing and you are going out of pocket."
+    $ stress += 10
+
+label end_stress_check:
+    if stress > max_stress :
+        scene sad_background
+        if gpa < 2.5:
+            "Unfortunately, you have not been able to handle the stress properly. So, you decide to dropout."
+        else:
+            "College life has been very rough on you. You are on the verge of getting homeless which is slowly leading you into the depression"
+    jump end_of_all_states
 
 # end game message
 label end_of_all_states:
     hide screen simple_stats_screen
-    "Your final stress level is [stress]."
     scene ucsb
     with zoomout
     "You are done with the game. Hope you learned something valuable throughout the journey."
